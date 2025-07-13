@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #181818; }
+        .payment-container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #222;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            padding: 32px 24px;
+            color: #fff;
+        }
+        .payment-container h2 {
+            color: #ffd700;
+            margin-bottom: 18px;
+        }
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .payment-row.total {
+            font-weight: bold;
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+        .discount-input {
+            width: 60%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #181818;
+            color: #fff;
+            margin-right: 8px;
+        }
+        .btn {
+            background: #2336e6;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin-right: 0;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #1a2596; }
+        .btn-back {
+            background: #ffd700;
+            color: #222;
+        }
+        .discount-success { color: #00e676; margin-top: 6px; }
+        .discount-error { color: #ff4d4f; margin-top: 6px; }
+        .form-group { margin-bottom: 12px; }
+        .input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #444;
+            background: #181818;
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 0;
+            box-sizing: border-box;
+        }
+        .input:focus {
+            outline: none;
+            border: 1.5px solid #ffd700;
+            background: #222;
+        }
+        #renter-error { min-height: 20px; }
+        .payment-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .payment-actions .btn, .payment-actions .btn-primary, .payment-actions .btn-yellow, .payment-actions .btn-back {
+            width: 48%;
+            margin-right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h2 id="payment-title">Thông tin người thuê</h2>
+        <div id="payment-step"></div>
+    </div>
+    <script>
+        let listing;
+        try {
+            listing = JSON.parse(localStorage.getItem('selectedCarListing'));
+        } catch (error) {
+            listing = null;
+        }
+        const TAX_RATE = 0.1;
+        const VALID_CODES = { 'DISCOUNT10': 0.1 };
+        let discountPercent = 0;
+        let renterInfo = {};
+
+        function showRenterForm() {
+            document.getElementById('payment-title').textContent = 'Thông tin người thuê';
+            document.getElementById('payment-step').innerHTML = `
+                <form id="renter-form" autocomplete="off" style="display:flex;flex-direction:column;gap:16px;">
+                    <div class="form-group">
+                        <input type="text" id="ten-nguoi-thue" class="input" placeholder="Họ tên người thuê" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="sdt-nguoi-thue" class="input" placeholder="Số điện thoại" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email-nguoi-thue" class="input" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="cccd-nguoi-thue" class="input" placeholder="CCCD/CMND" required>
+                    </div>
+                    <div id="renter-error" style="color:#ff4d4f;margin-bottom:4px"></div>
+                    <div class="payment-actions">
+                        <a href="car-detail.html" class="btn btn-back">Quay lại</a>
+                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    </div>
+                </form>
+            `;
+            document.getElementById('renter-form').onsubmit = function(e) {
+                e.preventDefault();
+                const ten = document.getElementById('ten-nguoi-thue').value.trim();
+                const sdt = document.getElementById('sdt-nguoi-thue').value.trim();
+                const email = document.getElementById('email-nguoi-thue').value.trim();
+                const cccd = document.getElementById('cccd-nguoi-thue').value.trim();
+                let error = '';
+                if (!ten || !sdt || !email || !cccd) error = 'Vui lòng nhập đầy đủ thông tin.';
+                else if (!/^0[0-9]{9}$/.test(sdt)) error = 'Số điện thoại phải đủ 10 số, bắt đầu bằng 0.';
+                else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) error = 'Email không hợp lệ.';
+                else if (!/^\d{9,12}$/.test(cccd)) error = 'CCCD/CMND phải từ 9-12 số.';
+                if (error) {
+                    document.getElementById('renter-error').textContent = error;
+                    return;
+                }
+                renterInfo = { ten, sdt, email, cccd };
+                showInvoice();
+            };
+        }
+
+        function showInvoice() {
+            document.getElementById('payment-title').textContent = 'Hóa đơn thanh toán';
+            let price = listing ? listing.price : 0;
+            let tax = Math.round(price * TAX_RATE);
+            let discountAmount = Math.round(price * discountPercent);
+            let total = price + tax - discountAmount;
+            document.getElementById('payment-step').innerHTML = `
+                <div id="invoice">
+                    <div class="payment-row"><span>Tên xe:</span><span>${listing ? listing.carName : ''}</span></div>
+                    <div class="payment-row"><span>Chủ xe:</span><span>${listing ? listing.owner : ''}</span></div>
+                    <div class="payment-row"><span>Giá thuê:</span><span>${price.toLocaleString('vi-VN')}</span></div>
+                    <div class="payment-row"><span>Thuế (10%):</span><span>${tax.toLocaleString('vi-VN')}</span></div>
+                    <div class="payment-row"><span>Giảm giá:</span><span>-${discountAmount.toLocaleString('vi-VN')}</span></div>
+                    <div class="payment-row total"><span>Tổng cộng:</span><span>${total.toLocaleString('vi-VN')}</span></div>
+                </div>
+                <div style="margin: 18px 0;">
+                    <input type="text" id="discount-code" class="discount-input" placeholder="Nhập mã giảm giá (nếu có)">
+                    <button class="btn" id="apply-discount">Áp dụng</button>
+                    <div id="discount-message"></div>
+                </div>
+                <div class="payment-actions">
+                    <a href="car-detail.html" class="btn btn-back">Quay lại</a>
+                    <button class="btn-yellow" id="confirm-pay">Xác nhận thanh toán</button>
+                </div>
+            `;
+            document.getElementById('apply-discount').onclick = function() {
+                const code = document.getElementById('discount-code').value.trim().toUpperCase();
+                if (!code) {
+                    document.getElementById('discount-message').textContent = 'Vui lòng nhập mã giảm giá.';
+                    document.getElementById('discount-message').className = 'discount-error';
+                    return;
+                }
+                if (VALID_CODES[code]) {
+                    discountPercent = VALID_CODES[code];
+                    document.getElementById('discount-message').textContent = 'Áp dụng mã giảm giá thành công!';
+                    document.getElementById('discount-message').className = 'discount-success';
+                } else {
+                    discountPercent = 0;
+                    document.getElementById('discount-message').textContent = 'Mã giảm giá không hợp lệ.';
+                    document.getElementById('discount-message').className = 'discount-error';
+                }
+                showInvoice();
+            };
+            document.getElementById('confirm-pay').onclick = function() {
+                alert('Thanh toán thành công! Cảm ơn bạn đã sử dụng dịch vụ.');
+                window.location.href = 'index.html';
+            };
+        }
+
+        // Hiển thị form nhập thông tin ngay khi vào trang
+        showRenterForm();
+    </script>
+</body>
+</html> 

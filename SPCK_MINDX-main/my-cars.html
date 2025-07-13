@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xe cho thuê của tôi</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #181818; }
+        .my-cars-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #222;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            padding: 32px 24px;
+            color: #fff;
+        }
+        .my-cars-title {
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .my-cars-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            justify-content: flex-start;
+        }
+        .my-car-card {
+            background: #232323;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            padding: 24px 16px 16px 16px;
+            text-align: center;
+            width: 260px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .my-car-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .my-car-card h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            margin-top: 0;
+        }
+        .my-car-card p {
+            color: #ffd700;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+        .my-car-card .btn-delete {
+            background: #ff4d4f;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+        .my-car-card .btn-delete:hover {
+            background: #b71c1c;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: #fff;
+            background: #ffd700;
+            padding: 8px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: #e6c200; color: #222; }
+    </style>
+</head>
+<body>
+    <div class="my-cars-container">
+        <a href="index.html" class="back-btn btn-primary">&larr; Quay lại</a>
+        <a href="add-car.html" class="btn btn-yellow" style="float:right;margin-bottom:18px;">+ Đăng xe cho thuê</a>
+        <div class="my-cars-title">Xe cho thuê của tôi</div>
+        <div class="my-cars-grid" id="my-cars-grid"></div>
+        <div id="no-cars-message" style="text-align:center;color:#ff4d4f;margin-top:24px;"></div>
+    </div>
+    <script>
+        function renderMyCars() {
+            let userCars = [];
+            try { userCars = JSON.parse(localStorage.getItem('userCars')) || []; } catch(e){ userCars = []; }
+            const grid = document.getElementById('my-cars-grid');
+            const noMsg = document.getElementById('no-cars-message');
+            // Lấy tên chủ xe và số điện thoại từ tài khoản đăng nhập
+            const ownerName = localStorage.getItem('username') || 'Chủ xe';
+            const ownerPhone = localStorage.getItem('phone') || '084xxxxxxx';
+            if (!userCars.length) {
+                grid.innerHTML = '';
+                noMsg.innerHTML = 'Bạn chưa đăng xe nào.';
+                // Thêm ví dụ xe mẫu
+                const sampleCars = [
+                    { carName: 'Toyota Camry', price: 1300000, image: 'images/toyota_car.jpg', desc: 'Xe rộng rãi, tiết kiệm nhiên liệu.' },
+                    { carName: 'Porsche 911', price: 9000000, image: 'images/Porshce.jpg', desc: 'Xe thể thao mạnh mẽ, sang trọng.' },
+                    { carName: 'Lamborghini Urus', price: 20000000, image: 'images/Urus.jpg', desc: 'SUV siêu sang, tốc độ cực đỉnh.' },
+                    { carName: 'Audi Q5', price: 3500000, image: 'images/Q5.jpg', desc: 'Xe gia đình, tiện nghi, an toàn.' }
+                ];
+                grid.innerHTML = sampleCars.map(car => `
+                    <div class="my-car-card">
+                        <img src="${car.image}" alt="${car.carName}">
+                        <h3>${car.carName}</h3>
+                        <p>Chủ xe: <strong>${ownerName}</strong></p>
+                        <p>Giá thuê: <span style='color:#ffd700;'>${car.price.toLocaleString('vi-VN')}</span>/ngày</p>
+                        <p style="color:#fff;font-size:0.95rem;">${car.desc || ''}</p>
+                        <p style="color:#fff;font-size:0.95rem;">Liên hệ: ${ownerPhone}</p>
+                    </div>
+                `).join('');
+                return;
+            }
+            noMsg.textContent = '';
+            grid.innerHTML = userCars.map((car, idx) => `
+                <div class="my-car-card">
+                    <img src="${car.image}" alt="${car.carName}">
+                    <h3>${car.carName}</h3>
+                    <p>Chủ xe: <strong>${ownerName}</strong></p>
+                    <p>Giá thuê: <span style='color:#ffd700;'>${car.price.toLocaleString('vi-VN')}</span>/ngày</p>
+                    <p style="color:#fff;font-size:0.95rem;">${car.desc || ''}</p>
+                    <p style="color:#fff;font-size:0.95rem;">Liên hệ: ${ownerPhone}</p>
+                    <button class="btn-delete" onclick="deleteCar(${idx})">Xóa</button>
+                </div>
+            `).join('');
+        }
+        // Lấy dữ liệu localStorage an toàn
+        function safeGetLocalStorage(key, defaultValue = null) {
+            try {
+                const value = localStorage.getItem(key);
+                return value ? JSON.parse(value) : defaultValue;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        window.deleteCar = function(idx) {
+            let userCars = safeGetLocalStorage('userCars', []);
+            if (confirm('Bạn chắc chắn muốn xóa xe này?')) {
+                userCars.splice(idx, 1);
+                try {
+                    localStorage.setItem('userCars', JSON.stringify(userCars));
+                    renderMyCars();
+                } catch (e) {
+                    alert('Lỗi khi xóa xe. Vui lòng thử lại!');
+                }
+            }
+        }
+        renderMyCars();
+    </script>
+</body>
+</html> 

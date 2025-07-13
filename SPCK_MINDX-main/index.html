@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Cuối Khóa MindX</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+.testimonial-slider-wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.testimonial-slider {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 30px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 16px;
+    scrollbar-width: none; /* Firefox */
+}
+.testimonial-slider::-webkit-scrollbar { display: none; }
+.testimonial-card {
+    min-width: 350px;
+    max-width: 350px;
+    flex: 0 0 350px;
+    scroll-snap-align: center;
+}
+@media (max-width: 1100px) {
+    .testimonial-card { min-width: 300px; max-width: 300px; flex-basis: 300px; }
+}
+@media (max-width: 900px) {
+    .testimonial-card { min-width: 90vw; max-width: 95vw; flex-basis: 90vw; }
+    .testimonial-slider { gap: 12px; }
+}
+</style>
+</head>
+<body>
+    <header>
+        <div class="top-header">
+            <div class="container">
+                <div class="contact-info">
+                    <span><i class="fa-solid fa-phone"></i> (123) 456-7890</span>
+                    <span><i class="fa-solid fa-envelope"></i> MindX@gmail.com</span>
+                </div>
+            </div>
+        </div>
+        <nav class="main-header">
+            <div class="container">
+                <div class="logo">
+                    Thành Trung
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#vehicles">Vehicles</a></li>
+                    <li><a href="#client">Feedback</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li class="user-auth-li">
+                        <div class="user-auth">
+                            <a href="#" id="login-register-btn" class="login-register-btn">
+                                <i class="fa-solid fa-user"></i> Login / Register
+                            </a>
+                            <div class="user-profile" id="user-profile-container" style="display: none;">
+                                <button id="user-profile-btn" class="user-profile-btn">
+                                    👤 Thành | <i class="fa-solid fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-menu">
+                                    <a href="#">Profile</a>
+                                    <a href="#">My Bookings</a>
+                                    <a href="my-cars.html">Xe cho thuê</a>
+                                    <a href="#" id="logout-btn">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Car Rent <br> For You</h1>
+                    <p>Xe đẹp – giá xinh – thuê phát là đi! Không thủ tục lằng nhằng, không lo trễ chuyến..</p>
+                    <div class="hero-buttons">
+                        <a href="#about" class="btn btn-primary">Read More</a>
+                        <a href="#contact" class="btn btn-secondary">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-image">
+                    <img src="images/jeep1.jpg" alt="Jeep Car">
+                </div>
+                <div class="about-content">
+                    <h2>ABOUT US</h2>
+                    <p>Tại Thành Trung, chúng tôi tin rằng mọi hành trình nên bắt đầu bằng sự thoải mái, an toàn và phong cách. Dù bạn đang lên kế hoạch cho một chuyến công tác, kỳ nghỉ cuối tuần hay chỉ cần một chiếc xe đáng tin cậy, chúng tôi cung cấp đa dạng các dòng xe được bảo dưỡng kỹ lưỡng với mức giá cạnh tranh. Với các gói thuê linh hoạt, hỗ trợ khách hàng 24/7 và quy trình đặt xe đơn giản, chúng tôi giúp việc thuê xe trở nên dễ dàng hơn bao giờ hết. Hãy để chúng tôi đồng hành cùng bạn – trên mọi nẻo đường.</p>
+                    <a href="#vehicles" class="btn btn-primary">Read Now</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="search-cars">
+            <div class="container">
+                <h3>Search Your Best Cars</h3>
+                <p>Chiếc xe nào là chiếc bạn cần trải nghiệm </p>
+                <form class="search-form">
+                    <select id="brand-select">
+                        <option value="" disabled selected>Any Brand</option>
+                        <option value="toyota">Toyota</option>
+                        <option value="porsche">Porsche</option>
+                        <option value="lamborghini">Lamborghini</option>
+                        <option value="ferrari">Ferrari</option>
+                        <option value="maybach">Maybach</option>
+                        <option value="audi">Audi</option>
+                    </select>
+                    <select id="type-select">
+                        <option value="" disabled selected>Any Type</option>
+                    </select>
+                    <input type="text" placeholder="Price">
+                    <button type="submit" class="btn btn-primary">SEARCH NOW</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="vehicles" class="best-offers">
+            <div class="container">
+                <h2>OUR BEST OFFERS</h2>
+                <div class="offers-grid">
+                    <div class="offer-card">
+                        <img src="images/toyota_car.jpg" alt="Toyota Car">
+                        <h3>TOYOTA CAR</h3>
+                        <p>Bắt đầu từ 1.350.000 VNĐ/ngày</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                    <div class="offer-card">
+                        <img src="images/Porshce.jpg" alt="Porsche Car">
+                        <h3>PORSCHE CAR</h3>
+                        <p>Bắt đầu từ 10.000.000 VNĐ/ngày</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                    <div class="offer-card">
+                        <img src="images/lamboghini.png" alt="LAMBORGHINI Car">
+                        <h3>LAMBORGHINI CAR</h3>
+                        <p>Bắt đầu từ 22.000.000 VNĐ/ngày</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                    <div class="offer-card">
+                        <img src="images/ferrari.jpg" alt="FERRARI Car">
+                        <h3>FERRARI CAR</h3>
+                        <p>Bắt đầu từ 25.000.000 VNĐ/ngày</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                    <div class="offer-card">
+                        <img src="images/maybach.jpg" alt="MAYBACH Car">
+                        <h3>MAYBACH CAR</h3>
+                        <p>Bắt đầu từ 15.000.000 VNĐ/ngày</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                    <div class="offer-card">
+                        <img src="images/audi.jpg" alt="AUDI Car">
+                        <h3>AUDI CAR</h3>
+                        <p>Bắt đầu từ 10.000.000 VNĐ/ngày</p>
+                        <a href="#" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="why-choose-us">
+            <div class="container">
+               <h2>WHY CHOOSE US</h2>
+               <div class="features-grid">
+                   <div class="feature-card">
+                       <i class="fa-solid fa-shield-halved"></i>
+                       <h3>SAFETY & SECURITY</h3>
+                       <p>Thông tin BẢO MẬT - AN TOÀN là yếu tố hàng đầu</p>
+                   </div>
+                   <div class="feature-card">
+                       <i class="fa-regular fa-calendar-check"></i>
+                       <h3>Online Booking</h3>
+                       <p>Sẵn sàng phục vụ mọi lúc mọi nơi khi bạn cần</p>
+                   </div>
+                   <div class="feature-card">
+                       <i class="fa-solid fa-user-tie"></i>
+                       <h3>Best Drivers</h3>
+                       <p>Chuyến đi của bạn là một phần trong dịch vụ của chúng tôi</p>
+                   </div>
+               </div>
+           </div>
+       </section>
+
+       <section id="client" class="testimonials">
+        <div class="container">
+            <h2>WHAT SAYS CUSTOMERS</h2>
+            <div class="testimonial-slider-wrap">
+                <div class="testimonial-slider" id="testimonial-slider"></div>
+            </div>
+        </div>
+    </section>
+    <script>
+const testimonials = [
+    {
+        img: 'images/Tuấn Thành.jpg',
+        name: 'Tuấn Thành',
+        text: 'Tôi thấy web này quá tuyệt vời'
+    },
+    {
+        img: 'images/Mạnh Trung.jpg',
+        name: 'Mạnh Trung',
+        text: 'Trang web này cho thuê xe rất chất lượng và uy tín'
+    },
+    {
+        img: 'https://randomuser.me/api/portraits/men/32.jpg',
+        name: 'Minh Quân',
+        text: 'Dịch vụ nhanh, xe mới, giá hợp lý. Sẽ ủng hộ lâu dài!'
+    },
+    {
+        img: 'https://randomuser.me/api/portraits/women/44.jpg',
+        name: 'Hà My',
+        text: 'Nhân viên hỗ trợ rất nhiệt tình, thủ tục đơn giản.'
+    },
+    {
+        img: 'https://randomuser.me/api/portraits/men/45.jpg',
+        name: 'Bảo Long',
+        text: 'Xe sang, trải nghiệm tuyệt vời, sẽ giới thiệu bạn bè!'
+    }
+];
+function renderTestimonialsInfinite() {
+    const slider = document.getElementById('testimonial-slider');
+    // Clone 2 card cuối lên đầu, 2 card đầu xuống cuối để tạo hiệu ứng vô hạn
+    const cards = [
+        testimonials[testimonials.length-2],
+        testimonials[testimonials.length-1],
+        ...testimonials,
+        testimonials[0],
+        testimonials[1]
+    ];
+    slider.innerHTML = cards.map(t => `
+        <div class="testimonial-card">
+            <img src="${t.img}" alt="${t.name}" style="object-fit:cover;width:80px;height:80px;border-radius:50%;margin-bottom:12px;">
+            <h4>${t.name}</h4>
+            <p>${t.text}</p>
+            <span class="quote-icon">“</span>
+        </div>
+    `).join('');
+    // Scroll đến card thực đầu tiên (index 2)
+    setTimeout(() => {
+        const card = slider.querySelector('.testimonial-card');
+        if(card) slider.scrollLeft = card.offsetWidth * 2 + 60; // 2 card + 2 gap
+    }, 0);
+}
+renderTestimonialsInfinite();
+// Infinite scroll logic
+const slider = document.getElementById('testimonial-slider');
+let isDown = false, startX, scrollLeft;
+slider.addEventListener('mousedown', e => {
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+});
+slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('active'); });
+slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active'); });
+slider.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    slider.scrollLeft = scrollLeft - walk;
+});
+// Touch
+slider.addEventListener('touchstart', e => {
+    isDown = true;
+    startX = e.touches[0].pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+});
+slider.addEventListener('touchend', () => { isDown = false; });
+slider.addEventListener('touchmove', e => {
+    if (!isDown) return;
+    const x = e.touches[0].pageX - slider.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    slider.scrollLeft = scrollLeft - walk;
+});
+// Infinite loop: khi scroll đến đầu/cuối thì nhảy về vị trí thực
+slider.addEventListener('scroll', () => {
+    const card = slider.querySelector('.testimonial-card');
+    if (!card) return;
+    const cardWidth = card.offsetWidth + 30; // 30 là gap
+    // Nếu về đầu (2 card clone đầu)
+    if (slider.scrollLeft < cardWidth) {
+        slider.scrollLeft = cardWidth * (testimonials.length + 1);
+    }
+    // Nếu về cuối (2 card clone cuối)
+    if (slider.scrollLeft > cardWidth * (testimonials.length + 1)) {
+        slider.scrollLeft = cardWidth * 2;
+    }
+});
+// Lăn chuột ngang (wheel)
+slider.addEventListener('wheel', function(e) {
+    if (e.deltaX !== 0 || e.shiftKey) {
+        // Nếu lăn ngang hoặc shift+lăn dọc
+        slider.scrollLeft += e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        e.preventDefault();
+    }
+});
+</script>
+        
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="contact-content">
+                    <h2>GET IN TOUCH</h2>
+                    <form class="contact-form" id="contact-form">
+                        <input type="text" name="name" placeholder="Name" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="text" name="phone" placeholder="Phone number" required>
+                        <textarea name="message" placeholder="Message" rows="5" required></textarea>
+                        <button type="submit" class="btn btn-primary">SEND</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Thành Trung</h4>
+                    <p>Dịch vụ cho thuê xe chuyên nghiệp, uy tín và nhanh chóng. Chúng tôi luôn sẵn sàng đồng hành trên mọi hành trình của bạn.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Subscribe Now</h4>
+                    <form class="subscribe-form" id="subscribe-form">
+                        <input type="email" placeholder="Enter Your Email" required>
+                        <button type="submit">SUBSCRIBE</button>
+                    </form>
+                </div>
+                <div class="footer-column">
+                    <h4>Information</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-map-marker-alt"></i> MindX</li>
+                        <li><i class="fa-solid fa-phone"></i> (123) 456-7890</li>
+                        <li><i class="fa-solid fa-envelope"></i> MindX@gmail.com</li>
+                    </ul>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>2025 All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                const header = document.querySelector('.main-header');
+                if (target && header) {
+                    const headerHeight = header.offsetHeight;
+                    const targetPosition = target.offsetTop - headerHeight;
+                    
+                    try {
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    } catch (error) {
+                        console.error('Error scrolling:', error);
+                        // Fallback for older browsers
+                        window.scrollTo(0, targetPosition);
+                    }
+                }
+            });
+        });
+
+        // --- User Auth Logic ---
+        const loginRegisterBtn = document.getElementById('login-register-btn');
+        const userProfileContainer = document.getElementById('user-profile-container');
+        const userProfileBtn = document.getElementById('user-profile-btn');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        function updateAuthState() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const username = localStorage.getItem('username') || 'User';
+            const loginTime = localStorage.getItem('loginTime');
+            
+            // Kiểm tra session timeout (24 giờ)
+            const sessionTimeout = 24 * 60 * 60 * 1000; // 24 giờ
+            const currentTime = new Date().getTime();
+            const isSessionValid = loginTime && (currentTime - parseInt(loginTime)) < sessionTimeout;
+            
+            if (isLoggedIn && isSessionValid) {
+                loginRegisterBtn.style.display = 'none';
+                userProfileContainer.style.display = 'block';
+                userProfileBtn.innerHTML = `👤 ${username} | <i class="fa-solid fa-caret-down"></i>`;
+            } else {
+                // Clear invalid session
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                localStorage.removeItem('loginTime');
+                
+                loginRegisterBtn.style.display = 'block';
+                userProfileContainer.style.display = 'none';
+                if (dropdownMenu) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        }
+
+        loginRegisterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'login.html';
+        });
+
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            localStorage.removeItem('loginTime');
+            updateAuthState();
+        });
+
+        userProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (dropdownMenu) {
+                dropdownMenu.classList.toggle('show');
+            }
+        });
+
+        window.addEventListener('click', () => {
+            if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        updateAuthState();
+
+        // Contact form handling
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const phone = formData.get('phone');
+                const message = formData.get('message');
+                
+                // Validation
+                if (!name || !email || !phone || !message) {
+                    alert('Vui lòng điền đầy đủ thông tin.');
+                    return;
+                }
+                
+                // Email validation (form liên hệ)
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Email không hợp lệ. Vui lòng nhập email đúng định dạng.');
+                    return;
+                }
+                
+                // Phone validation
+                const phoneRegex = /^0[0-9]{9,10}$/;
+                if (!phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+                    alert('Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại Việt Nam hợp lệ.');
+                    return;
+                }
+                
+                alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.');
+                this.reset();
+            });
+        }
+
+        // --- Dependent Dropdown Logic ---
+        const carModels = {
+            toyota: ['Camry', 'Corolla', 'RAV4', 'Highlander'],
+            porsche: ['911', 'Cayenne', 'Panamera', 'Taycan'],
+            lamborghini: ['Aventador', 'Huracan', 'Urus'],
+            ferrari: ['488', 'SF90 Stradale', 'Roma', 'F8 Tributo'],
+            maybach: ['S-Class', 'GLS 600'],
+            audi: ['R8', 'A4', 'Q5', 'A6', 'Q7']
+        };
+
+        const brandSelect = document.getElementById('brand-select');
+        const typeSelect = document.getElementById('type-select');
+
+        if (brandSelect && typeSelect) {
+            brandSelect.addEventListener('change', (e) => {
+                const selectedBrand = e.target.value;
+                
+                // Clear previous options
+                typeSelect.innerHTML = '<option value="" disabled selected>Any Type</option>';
+
+                if (selectedBrand && carModels[selectedBrand]) {
+                    const models = carModels[selectedBrand];
+                    models.forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model.toLowerCase().replace(/ /g, '-');
+                        option.textContent = model;
+                        typeSelect.appendChild(option);
+                    });
+                }
+            });
+        }
+
+        // --- Car Data & Search Logic ---
+        const cars = [
+            {
+                brand: 'toyota',
+                type: 'camry',
+                name: 'Toyota Camry',
+                listings: [
+                    { owner: 'Nguyễn Văn Nam', price: 1300000, phone: '0841234567', image: 'images/toyota_car.jpg' },
+                    { owner: 'Trần Thị Hạnh', price: 1400000, phone: '0842345678', image: 'images/toyota_car.jpg' },
+                    { owner: 'Lê Minh Hùng', price: 1500000, phone: '0843456789', image: 'images/toyota_car.jpg' }
+                ]
+            },
+            {
+                brand: 'toyota',
+                type: 'corolla',
+                name: 'Toyota Corolla',
+                listings: [
+                    { owner: 'Đỗ Thị Linh', price: 950000, phone: '0844567890', image: 'images/Toyota_Corolla.jpg' },
+                    { owner: 'Bùi Văn Phúc', price: 1050000, phone: '0845678901', image: 'images/Toyota_Corolla.jpg' }
+                ]
+            },
+            {
+                brand: 'toyota',
+                type: 'rav4',
+                name: 'Toyota RAV4',
+                listings: [
+                    { owner: 'Phạm Quang Dũng', price: 1300000, phone: '0846789012', image: 'images/Toyota_RAV4.jpg' },
+                    { owner: 'Vũ Thị Mai', price: 1450000, phone: '0847890123', image: 'images/Toyota_RAV4.jpg' }
+                ]
+            },
+            {
+                brand: 'toyota',
+                type: 'highlander',
+                name: 'Toyota Highlander',
+                listings: [
+                    { owner: 'Phan Văn Khánh', price: 1700000, phone: '0848901234', image: 'images/Toyota_Highlander.jpg' },
+                    { owner: 'Lý Thị Hoa', price: 1850000, phone: '0849012345', image: 'images/Toyota_Highlander.jpg' }
+                ]
+            },
+            {
+                brand: 'porsche',
+                type: '911',
+                name: 'Porsche 911',
+                listings: [
+                    { owner: 'Nguyễn Thị Trang', price: 9000000, phone: '0841234576', image: 'images/Porshce.jpg' },
+                    { owner: 'Đặng Văn Sơn', price: 10000000, phone: '0841234577', image: 'images/Porshce.jpg' }
+                ]
+            },
+            {
+                brand: 'porsche',
+                type: 'cayenne',
+                name: 'Porsche Cayenne',
+                listings: [
+                    { owner: 'Trần Thị Hồng', price: 8000000, phone: '0841234578', image: 'images/Cayenne.jpg' },
+                    { owner: 'Ngô Văn Bình', price: 9000000, phone: '0841234579', image: 'images/Cayenne.jpg' }
+                ]
+            },
+            {
+                brand: 'porsche',
+                type: 'panamera',
+                name: 'Porsche Panamera',
+                listings: [
+                    { owner: 'Lê Thị Thu', price: 9500000, phone: '0841234580', image: 'images/Panamera.jpg' },
+                    { owner: 'Phạm Văn Hòa', price: 11000000, phone: '0841234581', image: 'images/Panamera.jpg' }
+                ]
+            },
+            {
+                brand: 'porsche',
+                type: 'taycan',
+                name: 'Porsche Taycan',
+                listings: [
+                    { owner: 'Nguyễn Thị Lan', price: 12000000, phone: '0841234582', image: 'images/Taycan.jpg' },
+                    { owner: 'Đỗ Văn Quang', price: 13500000, phone: '0841234583', image: 'images/Taycan.jpg' }
+                ]
+            },
+            {
+                brand: 'lamborghini',
+                type: 'aventador',
+                name: 'Lamborghini Aventador',
+                listings: [
+                    { owner: 'Nguyễn Thị Hương', price: 30000000, phone: '0841234584', image: 'images/Aventador.jpg' },
+                    { owner: 'Bùi Văn Phúc', price: 32000000, phone: '0841234585', image: 'images/Aventador.jpg' }
+                ]
+            },
+            {
+                brand: 'lamborghini',
+                type: 'huracan',
+                name: 'Lamborghini Huracan',
+                listings: [
+                    { owner: 'Vũ Thị Mai', price: 25000000, phone: '0841234586', image: 'images/Huracan.jpg' },
+                    { owner: 'Phan Văn Khánh', price: 27000000, phone: '0841234587', image: 'images/Huracan.jpg' }
+                ]
+            },
+            {
+                brand: 'lamborghini',
+                type: 'urus',
+                name: 'Lamborghini Urus',
+                listings: [
+                    { owner: 'Lý Thị Hoa', price: 20000000, phone: '0841234588', image: 'images/Urus.jpg' },
+                    { owner: 'Nguyễn Văn Nam', price: 22000000, phone: '0841234589', image: 'images/Urus.jpg' }
+                ]
+            },
+            {
+                brand: 'ferrari',
+                type: '488',
+                name: 'Ferrari 488',
+                listings: [
+                    { owner: 'Trần Thị Hạnh', price: 22000000, phone: '0841234590', image: 'images/488.jpg' },
+                    { owner: 'Lê Minh Hùng', price: 24000000, phone: '0841234591', image: 'images/488.jpg' }
+                ]
+            },
+            {
+                brand: 'ferrari',
+                type: 'sf90 stradale',
+                name: 'Ferrari SF90 Stradale',
+                listings: [
+                    { owner: 'Đỗ Thị Linh', price: 35000000, phone: '0841234592', image: 'images/SF90 Stradale.jpg' },
+                    { owner: 'Bùi Văn Phúc', price: 37000000, phone: '0841234593', image: 'images/SF90 Stradale.jpg' }
+                ]
+            },
+            {
+                brand: 'ferrari',
+                type: 'roma',
+                name: 'Ferrari Roma',
+                listings: [
+                    { owner: 'Phạm Quang Dũng', price: 28000000, phone: '0841234594', image: 'images/Roma.jpg' },
+                    { owner: 'Vũ Thị Mai', price: 30000000, phone: '0841234595', image: 'images/Roma.jpg' }
+                ]
+            },
+            {
+                brand: 'ferrari',
+                type: 'f8 tributo',
+                name: 'Ferrari F8 Tributo',
+                listings: [
+                    { owner: 'Phan Văn Khánh', price: 32000000, phone: '0841234596', image: 'images/F8_Tributo.jpg' },
+                    { owner: 'Lý Thị Hoa', price: 34000000, phone: '0841234597', image: 'images/F8_Tributo.jpg' }
+                ]
+            },
+            {
+                brand: 'maybach',
+                type: 's-class',
+                name: 'Maybach S-Class',
+                listings: [
+                    { owner: 'Nguyễn Thị Trang', price: 15000000, phone: '0841234598', image: 'images/S_Class.jpg' },
+                    { owner: 'Đặng Văn Sơn', price: 17000000, phone: '0841234599', image: 'images/S_Class.jpg' }
+                ]
+            },
+            {
+                brand: 'maybach',
+                type: 'gls 600',
+                name: 'Maybach GLS 600',
+                listings: [
+                    { owner: 'Trần Thị Hồng', price: 18000000, phone: '0841234600', image: 'images/GLS_600.jpg' },
+                    { owner: 'Ngô Văn Bình', price: 20000000, phone: '0841234601', image: 'images/GLS_600.jpg' }
+                ]
+            },
+            {
+                brand: 'audi',
+                type: 'r8',
+                name: 'Audi R8',
+                listings: [
+                    { owner: 'Lê Thị Thu', price: 12000000, phone: '0841234602', image: 'images/R8.jpg' },
+                    { owner: 'Phạm Văn Hòa', price: 13500000, phone: '0841234603', image: 'images/R8.jpg' }
+                ]
+            },
+            {
+                brand: 'audi',
+                type: 'a4',
+                name: 'Audi A4',
+                listings: [
+                    { owner: 'Nguyễn Thị Lan', price: 2200000, phone: '0841234604', image: 'images/A4.jpg' },
+                    { owner: 'Đỗ Văn Quang', price: 2500000, phone: '0841234605', image: 'images/A4.jpg' }
+                ]
+            },
+            {
+                brand: 'audi',
+                type: 'q5',
+                name: 'Audi Q5',
+                listings: [
+                    { owner: 'Nguyễn Thị Hương', price: 3500000, phone: '0841234606', image: 'images/Q5.jpg' },
+                    { owner: 'Bùi Văn Phúc', price: 3700000, phone: '0841234607', image: 'images/Q5.jpg' }
+                ]
+            },
+            {
+                brand: 'audi',
+                type: 'a6',
+                name: 'Audi A6',
+                listings: [
+                    { owner: 'Vũ Thị Mai', price: 2800000, phone: '0841234608', image: 'images/A6.jpg' },
+                    { owner: 'Phan Văn Khánh', price: 3200000, phone: '0841234609', image: 'images/A6.jpg' }
+                ]
+            },
+            {
+                brand: 'audi',
+                type: 'q7',
+                name: 'Audi Q7',
+                listings: [
+                    { owner: 'Lý Thị Hoa', price: 5000000, phone: '0841234610', image: 'images/Q7.jpg' },
+                    { owner: 'Nguyễn Văn Nam', price: 5500000, phone: '0841234611', image: 'images/Q7.jpg' }
+                ]
+            }
+        ];
+
+        const searchForm = document.querySelector('.search-form');
+
+        if (searchForm) {
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const brand = brandSelect.value;
+                const type = typeSelect.value;
+                const priceInput = searchForm.querySelector('input[type="text"]').value;
+                const price = parseFloat(priceInput);
+
+                // Validation
+                if (!brand && !type && !priceInput.trim()) {
+                    alert('Vui lòng chọn ít nhất một tiêu chí tìm kiếm.');
+                    return;
+                }
+
+                // Lọc theo brand và type nếu có chọn
+                let filteredCars = cars.filter(car => {
+                    let match = true;
+                    if (brand) match = match && car.brand === brand;
+                    if (type) match = match && car.type === type;
+                    return match;
+                });
+
+                // Gom tất cả các listings của các mẫu xe phù hợp
+                let allListings = [];
+                filteredCars.forEach(car => {
+                    car.listings.forEach(listing => {
+                        allListings.push({
+                            ...listing,
+                            carName: car.name
+                        });
+                    });
+                });
+
+                // Nếu có nhập giá, tìm các listings có giá gần nhất
+                let resultListings = allListings;
+                if (!isNaN(price) && allListings.length > 0) {
+                    let minDiff = Math.min(...allListings.map(listing => Math.abs(listing.price - price)));
+                    resultListings = allListings.filter(listing => Math.abs(listing.price - price) === minDiff);
+                }
+
+                // Hiển thị kết quả dưới form
+                displaySearchResults(resultListings);
+            });
+        }
+
+        function displaySearchResults(listings) {
+            let resultDiv = document.getElementById('search-results');
+            if (!resultDiv) {
+                resultDiv = document.createElement('div');
+                resultDiv.id = 'search-results';
+                document.querySelector('.search-cars .container').appendChild(resultDiv);
+            }
+            if (listings.length === 0) {
+                resultDiv.innerHTML = '<p>Không tìm thấy xe phù hợp.</p>';
+                return;
+            }
+            resultDiv.innerHTML = listings.map(listing => `
+                <div class="offer-card">
+                    <img src="${listing.image}" alt="${listing.carName}">
+                    <h3>${listing.carName}</h3>
+                    <p>Chủ xe: <strong>${listing.owner}</strong></p>
+                    <p>Giá thuê: <span style="color:#ffd700;">${listing.price.toLocaleString('vi-VN')}</span>/ngày</p>
+                    <p>Liên hệ: <a href="tel:${listing.phone}">${listing.phone}</a></p>
+                    <a href="#" class="btn btn-primary book-now-btn" data-listing='${JSON.stringify(listing)}'>Book Now</a>
+                </div>
+            `).join('');
+
+            // Gán sự kiện cho các nút Book Now
+            setTimeout(() => {
+                document.querySelectorAll('.book-now-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        try {
+                            const listing = JSON.parse(this.getAttribute('data-listing'));
+                            localStorage.setItem('selectedCarListing', JSON.stringify(listing));
+                            window.location.href = 'car-detail.html';
+                        } catch (error) {
+                            console.error('Error parsing listing data:', error);
+                            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                        }
+                    });
+                });
+            }, 0);
+        }
+
+        // Đảm bảo các nút Book Now ở OUR BEST OFFERS hoạt động đúng
+        setTimeout(() => {
+            const bestOffersButtons = document.querySelectorAll('.best-offers .offer-card .btn');
+            if (bestOffersButtons.length > 0) {
+                bestOffersButtons.forEach(btn => {
+                btn.setAttribute('href', '#');
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    const card = this.closest('.offer-card');
+                    const carName = card.querySelector('h3').textContent.trim();
+                    // Map carName về brand, type, name
+                    const carMap = {
+                        'TOYOTA CAR': { brand: 'toyota', type: 'camry', name: 'Toyota Camry' },
+                        'PORSCHE CAR': { brand: 'porsche', type: '911', name: 'Porsche 911' },
+                        'LAMBORGHINI CAR': { brand: 'lamborghini', type: 'aventador', name: 'Lamborghini Aventador' },
+                        'FERRARI CAR': { brand: 'ferrari', type: '488', name: 'Ferrari 488' },
+                        'MAYBACH CAR': { brand: 'maybach', type: 's-class', name: 'Maybach S-Class' },
+                        'AUDI CAR': { brand: 'audi', type: 'r8', name: 'Audi R8' }
+                    };
+                    const carInfo = carMap[carName];
+                    if (carInfo) {
+                        try {
+                            localStorage.setItem('selectedCarModel', JSON.stringify(carInfo));
+                            window.location.href = 'listings.html';
+                        } catch (error) {
+                            console.error('Error saving car model:', error);
+                            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                        }
+                    }
+                };
+            });
+        }
+            }, 0);
+
+        // Subscribe form handling
+        const subscribeForm = document.getElementById('subscribe-form');
+        if (subscribeForm) {
+            subscribeForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value.trim();
+                
+                // Email validation (subscribe)
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Email không hợp lệ. Vui lòng nhập email đúng định dạng.');
+                    return;
+                }
+                
+                alert('Cảm ơn bạn đã đăng ký!');
+                this.reset();
+            });
+        }
+
+        // Lấy dữ liệu localStorage an toàn
+        function safeGetLocalStorage(key, defaultValue = null) {
+            try {
+                const value = localStorage.getItem(key);
+                return value ? JSON.parse(value) : defaultValue;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+    </script>
+</body>
+</html>

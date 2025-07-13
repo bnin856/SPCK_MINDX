@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng xe cho thuê</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #181818; }
+        .add-car-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #222;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            padding: 32px 24px;
+            color: #fff;
+        }
+        .add-car-container h2 {
+            color: #ffd700;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .add-car-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .add-car-form input, .add-car-form select, .add-car-form textarea {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #181818;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .add-car-form button {
+            background: #2336e6;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .add-car-form button:hover {
+            background: #1a2596;
+        }
+        .success-message {
+            color: #00e676;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .error-message {
+            color: #ff4d4f;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="add-car-container">
+        <h2>Đăng xe cho thuê</h2>
+        <form class="add-car-form" id="add-car-form" enctype="multipart/form-data">
+            <input type="text" id="owner" placeholder="Họ tên chủ xe" required>
+            <input type="text" id="phone" placeholder="Số điện thoại (bắt đầu 084)" required pattern="^084[0-9]{7}$">
+            <input type="text" id="carName" placeholder="Tên xe (ví dụ: Toyota Camry)" required>
+            <select id="brand" required>
+                <option value="">Chọn hãng xe</option>
+                <option value="toyota">Toyota</option>
+                <option value="porsche">Porsche</option>
+                <option value="lamborghini">Lamborghini</option>
+                <option value="ferrari">Ferrari</option>
+                <option value="maybach">Maybach</option>
+                <option value="audi">Audi</option>
+            </select>
+            <select id="type" required>
+                <option value="">Chọn loại xe</option>
+            </select>
+            <input type="number" id="price" placeholder="Giá thuê/ngày (VND)" min="100000" required>
+            <input type="file" id="imageFile" accept="image/*">
+            <input type="text" id="image" placeholder="Link ảnh xe">
+            <textarea id="desc" placeholder="Mô tả ngắn về xe" rows="3"></textarea>
+            <button type="submit" class="btn-yellow">Đăng xe</button>
+            <div class="success-message" id="success-message"></div>
+            <div class="error-message" id="error-message"></div>
+        </form>
+        <div style="text-align:center;margin-top:18px;">
+            <a href="index.html" class="btn btn-primary">Quay lại trang chủ</a>
+        </div>
+    </div>
+    <script>
+        // Loại xe theo hãng
+        const carModels = {
+            toyota: ['Camry', 'Corolla', 'RAV4', 'Highlander'],
+            porsche: ['911', 'Cayenne', 'Panamera', 'Taycan'],
+            lamborghini: ['Aventador', 'Huracan', 'Urus'],
+            ferrari: ['488', 'SF90 Stradale', 'Roma', 'F8 Tributo'],
+            maybach: ['S-Class', 'GLS 600'],
+            audi: ['R8', 'A4', 'Q5', 'A6', 'Q7']
+        };
+        const brandSelect = document.getElementById('brand');
+        const typeSelect = document.getElementById('type');
+        brandSelect.addEventListener('change', function() {
+            const brand = this.value;
+            typeSelect.innerHTML = '<option value="">Chọn loại xe</option>';
+            if (carModels[brand]) {
+                carModels[brand].forEach(model => {
+                    const opt = document.createElement('option');
+                    opt.value = model.toLowerCase().replace(/ /g, '-');
+                    opt.textContent = model;
+                    typeSelect.appendChild(opt);
+                });
+            }
+        });
+        // Xử lý submit
+        document.getElementById('add-car-form').onsubmit = function(e) {
+            e.preventDefault();
+            const owner = document.getElementById('owner').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const carName = document.getElementById('carName').value.trim();
+            const brand = document.getElementById('brand').value;
+            const type = document.getElementById('type').value;
+            const price = parseInt(document.getElementById('price').value, 10);
+            const imageInput = document.getElementById('image');
+            const imageFileInput = document.getElementById('imageFile');
+            const desc = document.getElementById('desc').value.trim();
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+            if (!/^084[0-9]{7}$/.test(phone)) {
+                errorDiv.textContent = 'Số điện thoại phải bắt đầu bằng 084 và đủ 10 số!';
+                return;
+            }
+            if (!owner || !carName || !brand || !type || !price) {
+                errorDiv.textContent = 'Vui lòng nhập đầy đủ thông tin!';
+                return;
+            }
+            // Xử lý ảnh: ưu tiên file upload
+            const file = imageFileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    saveCar(evt.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else if (imageInput.value.trim()) {
+                saveCar(imageInput.value.trim());
+            } else {
+                errorDiv.textContent = 'Vui lòng chọn ảnh hoặc nhập link ảnh!';
+                return;
+            }
+            function saveCar(imageValue) {
+                const newCar = { owner, phone, carName, brand, type, price, image: imageValue, desc };
+                let userCars = safeGetLocalStorage('userCars', []);
+                userCars.push(newCar);
+                try {
+                    localStorage.setItem('userCars', JSON.stringify(userCars));
+                    successDiv.textContent = 'Đăng xe thành công!';
+                    document.getElementById('add-car-form').reset();
+                } catch (e) {
+                    errorDiv.textContent = 'Lưu dữ liệu thất bại. Vui lòng thử lại!';
+                }
+            }
+        };
+        // Lấy dữ liệu localStorage an toàn
+        function safeGetLocalStorage(key, defaultValue = null) {
+            try {
+                const value = localStorage.getItem(key);
+                return value ? JSON.parse(value) : defaultValue;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+    </script>
+</body>
+</html> 

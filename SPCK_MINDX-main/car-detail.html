@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết xe</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #181818; }
+        .car-detail-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #222;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            padding: 32px 24px;
+            color: #fff;
+        }
+        .car-detail-header {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .car-detail-header img {
+            width: 340px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #333;
+        }
+        .car-detail-info {
+            flex: 1;
+        }
+        .car-detail-info h2 {
+            margin: 0 0 12px 0;
+            font-size: 2rem;
+            color: #ffd700;
+        }
+        .car-detail-info p {
+            margin: 6px 0;
+        }
+        .car-detail-section {
+            margin-top: 32px;
+        }
+        .car-detail-section h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        .car-detail-section ul {
+            margin: 0 0 0 18px;
+        }
+        .car-detail-section li {
+            margin-bottom: 6px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: #fff;
+            background: #2336e6;
+            padding: 8px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: #1a2596; }
+    </style>
+</head>
+<body>
+    <div class="car-detail-modern">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <a href="index.html" class="back-btn btn-primary">&larr; Quay lại</a>
+            <button id="pay-btn" class="btn-yellow back-btn">Thanh toán</button>
+        </div>
+        <div class="car-detail-header-modern">
+            <img id="car-image" class="car-detail-img-large" src="" alt="Car Image">
+            <div class="car-detail-info-modern">
+                <div class="car-detail-title" id="car-name"></div>
+                <div class="car-detail-price" id="car-price"></div>
+                <div style="margin-bottom:10px;"><strong>Chủ xe:</strong> <span id="car-owner"></span></div>
+                <div style="margin-bottom:10px;"><strong>Liên hệ:</strong> <span id="car-phone"></span></div>
+                <img id="car-image-small" src="" alt="Car Small" style="width:60px;height:40px;object-fit:cover;border-radius:6px;display:none;">
+            </div>
+        </div>
+        <div class="car-detail-desc" id="car-desc">Dịch vụ thuê xe chất lượng, xe được bảo dưỡng định kỳ, hỗ trợ 24/7, thủ tục nhanh gọn.</div>
+        <table class="spec-table">
+            <thead>
+                <tr><th>Thông số</th><th>Giá trị</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Động cơ</td><td>2.5L I4</td></tr>
+                <tr><td>Công suất</td><td>203 mã lực</td></tr>
+                <tr><td>Hộp số</td><td>Tự động 8 cấp</td></tr>
+                <tr><td>Mức tiêu thụ</td><td>7.8L / 100km (kết hợp)</td></tr>
+                <tr><td>Chiều dài cơ sở</td><td>2.825 mm</td></tr>
+                <tr><td>Số chỗ ngồi</td><td>5</td></tr>
+                <tr><td>Túi khí</td><td>7 túi khí</td></tr>
+                <tr><td>An toàn</td><td>ABS, EBD, VSC, Hỗ trợ khởi hành ngang dốc</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        // Thông số kỹ thuật cho từng mẫu xe
+        const specsByModel = {
+            'Toyota Camry': {
+                'Động cơ': '2.5L I4',
+                'Công suất': '203 mã lực',
+                'Hộp số': 'Tự động 8 cấp',
+                'Mức tiêu thụ': '7.8L/100km (kết hợp)',
+                'Chiều dài cơ sở': '2.825 mm',
+                'Số chỗ ngồi': '5',
+                'Túi khí': '7',
+                'An toàn': 'ABS, EBD, VSC, Hỗ trợ khởi hành ngang dốc'
+            },
+            'Toyota Corolla': {
+                'Động cơ': '1.8L I4',
+                'Công suất': '140 mã lực',
+                'Hộp số': 'CVT',
+                'Mức tiêu thụ': '6.5L/100km (kết hợp)',
+                'Chiều dài cơ sở': '2.700 mm',
+                'Số chỗ ngồi': '5',
+                'Túi khí': '7',
+                'An toàn': 'ABS, EBD, VSC, Hỗ trợ khởi hành ngang dốc'
+            },
+            'Toyota RAV4': {
+                'Động cơ': '2.5L I4',
+                'Công suất': '203 mã lực',
+                'Hộp số': 'Tự động 8 cấp',
+                'Mức tiêu thụ': '7.1L/100km (kết hợp)',
+                'Chiều dài cơ sở': '2.690 mm',
+                'Số chỗ ngồi': '5',
+                'Túi khí': '7',
+                'An toàn': 'ABS, EBD, VSC, Hỗ trợ khởi hành ngang dốc'
+            },
+            'Toyota Highlander': {
+                'Động cơ': '2.5L Hybrid hoặc 3.5L V6',
+                'Công suất': '243-295 mã lực',
+                'Hộp số': 'Tự động 8 cấp',
+                'Mức tiêu thụ': '8.1L/100km (kết hợp)',
+                'Chiều dài cơ sở': '2.850 mm',
+                'Số chỗ ngồi': '7',
+                'Túi khí': '7',
+                'An toàn': 'ABS, EBD, VSC, Hỗ trợ khởi hành ngang dốc'
+            },
+            'Porsche 911': {
+                'Động cơ': '3.0L 6 xy-lanh tăng áp',
+                'Công suất': '379-641 mã lực',
+                'Hộp số': 'Tự động 8 cấp PDK',
+                'Mức tiêu thụ': '9.0-11.0L/100km',
+                'Chiều dài cơ sở': '2.450 mm',
+                'Số chỗ ngồi': '4',
+                'Túi khí': '6',
+                'An toàn': 'ABS, EBD, PSM, hỗ trợ phanh'
+            },
+            'Porsche Cayenne': {
+                'Động cơ': '3.0L V6 tăng áp',
+                'Công suất': '340-541 mã lực',
+                'Hộp số': 'Tự động 8 cấp Tiptronic S',
+                'Mức tiêu thụ': '9.2-11.9L/100km',
+                'Chiều dài cơ sở': '2.895 mm',
+                'Số chỗ ngồi': '5',
+                'Túi khí': '8',
+                'An toàn': 'ABS, EBD, PSM, hỗ trợ phanh'
+            },
+            'Porsche Panamera': {
+                'Động cơ': '2.9L V6 hoặc 4.0L V8',
+                'Công suất': '330-630 mã lực',
+                'Hộp số': 'Tự động 8 cấp PDK',
+                'Mức tiêu thụ': '8.1-11.3L/100km',
+                'Chiều dài cơ sở': '2.950 mm',
+                'Số chỗ ngồi': '4',
+                'Túi khí': '8',
+                'An toàn': 'ABS, EBD, PSM, hỗ trợ phanh'
+            },
+            'Porsche Taycan': {
+                'Động cơ': 'Điện',
+                'Công suất': '408-761 mã lực',
+                'Hộp số': '2 cấp (cầu sau)',
+                'Mức tiêu thụ': '21-28 kWh/100km',
+                'Chiều dài cơ sở': '2.900 mm',
+                'Số chỗ ngồi': '4-5',
+                'Túi khí': '8',
+                'An toàn': 'ABS, EBD, PSM, hỗ trợ phanh'
+            },
+            'Lamborghini Aventador': {
+                'Động cơ': '6.5L V12',
+                'Công suất': '740 mã lực',
+                'Hộp số': 'Tự động 7 cấp ISR',
+                'Mức tiêu thụ': '17.9L/100km',
+                'Chiều dài cơ sở': '2.700 mm',
+                'Số chỗ ngồi': '2',
+                'Túi khí': '4',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Lamborghini Huracan': {
+                'Động cơ': '5.2L V10',
+                'Công suất': '610-640 mã lực',
+                'Hộp số': 'Tự động 7 cấp LDF',
+                'Mức tiêu thụ': '13.7L/100km',
+                'Chiều dài cơ sở': '2.620 mm',
+                'Số chỗ ngồi': '2',
+                'Túi khí': '4',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Lamborghini Urus': {
+                'Động cơ': '4.0L V8 tăng áp kép',
+                'Công suất': '650 mã lực',
+                'Hộp số': 'Tự động 8 cấp',
+                'Mức tiêu thụ': '12.7L/100km',
+                'Chiều dài cơ sở': '3.003 mm',
+                'Số chỗ ngồi': '5',
+                'Túi khí': '6',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Ferrari 488': {
+                'Động cơ': '3.9L V8 tăng áp kép',
+                'Công suất': '670 mã lực',
+                'Hộp số': 'Tự động 7 cấp DCT',
+                'Mức tiêu thụ': '11.4L/100km',
+                'Chiều dài cơ sở': '2.650 mm',
+                'Số chỗ ngồi': '2',
+                'Túi khí': '4',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Ferrari SF90 Stradale': {
+                'Động cơ': '4.0L V8 + 3 động cơ điện',
+                'Công suất': '1000 mã lực',
+                'Hộp số': 'Tự động 8 cấp DCT',
+                'Mức tiêu thụ': '6.1L/100km (kết hợp)',
+                'Chiều dài cơ sở': '2.650 mm',
+                'Số chỗ ngồi': '2',
+                'Túi khí': '4',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Ferrari Roma': {
+                'Động cơ': '3.9L V8 tăng áp kép',
+                'Công suất': '620 mã lực',
+                'Hộp số': 'Tự động 8 cấp DCT',
+                'Mức tiêu thụ': '11.2L/100km',
+                'Chiều dài cơ sở': '2.670 mm',
+                'Số chỗ ngồi': '2+2',
+                'Túi khí': '6',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Ferrari F8 Tributo': {
+                'Động cơ': '3.9L V8 tăng áp kép',
+                'Công suất': '720 mã lực',
+                'Hộp số': 'Tự động 7 cấp DCT',
+                'Mức tiêu thụ': '11.5L/100km',
+                'Chiều dài cơ sở': '2.650 mm',
+                'Số chỗ ngồi': '2',
+                'Túi khí': '4',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Maybach S-Class': {
+                'Động cơ': '4.0L V8 hoặc 6.0L V12',
+                'Công suất': '496-621 mã lực',
+                'Hộp số': 'Tự động 9 cấp',
+                'Mức tiêu thụ': '10.2-13.3L/100km',
+                'Chiều dài cơ sở': '3.396 mm',
+                'Số chỗ ngồi': '4-5',
+                'Túi khí': '10',
+                'An toàn': 'ABS, EBD, ESP, hỗ trợ phanh'
+            },
+            'Maybach GLS 600': {
+                'Động cơ': '4.0L V8 tăng áp kép',
+                'Công suất': '558 mã lực',
+                'Hộp số': 'Tự động 9 cấp',
+                'Mức tiêu thụ': '12.0L/100km',
+                'Chiều dài cơ sở': '3.135 mm',
+                'Số chỗ ngồi': '4-5',
+                'Túi khí': '10',
+                'An toàn': 'ABS, EBD, ESP, hỗ trợ phanh'
+            },
+            'Audi R8': {
+                'Động cơ': '5.2L V10',
+                'Công suất': '570-620 mã lực',
+                'Hộp số': 'Tự động 7 cấp S tronic',
+                'Mức tiêu thụ': '13.1L/100km',
+                'Chiều dài cơ sở': '2.650 mm',
+                'Số chỗ ngồi': '2',
+                'Túi khí': '6',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Audi A4': {
+                'Động cơ': '2.0L I4 tăng áp',
+                'Công suất': '150-252 mã lực',
+                'Hộp số': 'Tự động 7 cấp S tronic',
+                'Mức tiêu thụ': '6.3L/100km',
+                'Chiều dài cơ sở': '2.820 mm',
+                'Số chỗ ngồi': '5',
+                'Túi khí': '6',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Audi Q5': {
+                'Động cơ': '2.0L I4 tăng áp',
+                'Công suất': '252 mã lực',
+                'Hộp số': 'Tự động 7 cấp S tronic',
+                'Mức tiêu thụ': '7.3L/100km',
+                'Chiều dài cơ sở': '2.820 mm',
+                'Số chỗ ngồi': '5',
+                'Túi khí': '6',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Audi A6': {
+                'Động cơ': '2.0L I4 hoặc 3.0L V6',
+                'Công suất': '204-340 mã lực',
+                'Hộp số': 'Tự động 7 cấp S tronic',
+                'Mức tiêu thụ': '6.2-7.1L/100km',
+                'Chiều dài cơ sở': '2.924 mm',
+                'Số chỗ ngồi': '5',
+                'Túi khí': '6',
+                'An toàn': 'ABS, EBD, ESC'
+            },
+            'Audi Q7': {
+                'Động cơ': '2.0L I4 hoặc 3.0L V6',
+                'Công suất': '252-340 mã lực',
+                'Hộp số': 'Tự động 8 cấp Tiptronic',
+                'Mức tiêu thụ': '8.1-9.1L/100km',
+                'Chiều dài cơ sở': '2.994 mm',
+                'Số chỗ ngồi': '7',
+                'Túi khí': '8',
+                'An toàn': 'ABS, EBD, ESC'
+            }
+        };
+        // Lấy dữ liệu localStorage an toàn
+        function safeGetLocalStorage(key, defaultValue = null) {
+            try {
+                const value = localStorage.getItem(key);
+                return value ? JSON.parse(value) : defaultValue;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        let listing = localStorage.getItem('selectedCarListing');
+        try { listing = listing ? JSON.parse(listing) : null; } catch(e){ listing = null; }
+        if (listing) {
+            document.getElementById('car-image').src = listing.image;
+            document.getElementById('car-name').textContent = listing.carName || 'Car';
+            document.getElementById('car-owner').textContent = listing.owner || 'Unknown';
+            document.getElementById('car-price').textContent = (listing.price ? listing.price.toLocaleString('vi-VN') + ' VNĐ' : '');
+            document.getElementById('car-phone').textContent = listing.phone || 'N/A';
+            // Ảnh nhỏ nếu có
+            let imgSmall = document.getElementById('car-image-small');
+            if (listing.image) {
+                imgSmall.src = listing.image;
+                imgSmall.style.display = 'inline-block';
+            }
+            // Hiển thị bảng thông số kỹ thuật đúng mẫu xe
+            const specs = specsByModel[listing.carName];
+            let specTable = document.querySelector('.spec-table');
+            if (specs) {
+                let html = '<thead><tr><th>Thông số</th><th>Giá trị</th></tr></thead><tbody>';
+                for (const key in specs) {
+                    html += `<tr><td>${key}</td><td>${specs[key]}</td></tr>`;
+                }
+                html += '</tbody>';
+                specTable.innerHTML = html;
+            } else {
+                specTable.innerHTML = '<tr><td colspan="2">Thông số kỹ thuật đang cập nhật...</td></tr>';
+            }
+        } else {
+            document.querySelector('.car-detail-modern').innerHTML = '<p>Không tìm thấy thông tin xe.</p>';
+        }
+        // Nút thanh toán
+        const payBtn = document.getElementById('pay-btn');
+        if (payBtn) {
+            payBtn.onclick = function() {
+                try {
+                    localStorage.setItem('selectedCarListing', JSON.stringify(listing));
+                    window.location.href = 'payment.html';
+                } catch (error) {
+                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                }
+            };
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách chủ xe cho thuê</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #181818; }
+        .listings-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #222;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            padding: 32px 24px;
+            color: #fff;
+        }
+        .listings-title {
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 24px;
+        }
+        .listings-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            justify-content: flex-start;
+        }
+        .listing-card {
+            background: #232323;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            padding: 24px 16px 16px 16px;
+            text-align: center;
+            width: 260px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .listing-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .listing-card h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            margin-top: 0;
+        }
+        .listing-card p {
+            color: #ffd700;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+        .listing-card .btn {
+            background: #2336e6;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+        .listing-card .btn:hover {
+            background: #1a2596;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: #fff;
+            background: #ffd700;
+            padding: 8px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: #e6c200; color: #222; }
+    </style>
+</head>
+<body>
+    <div class="listings-container">
+        <a href="index.html" class="back-btn btn-primary">&larr; Quay lại</a>
+        <div class="listings-title" id="listings-title"></div>
+        <div class="listings-grid" id="listings-grid"></div>
+    </div>
+    <script>
+        // Dữ liệu mẫu xe và listings (giống index.html)
+        const cars = [
+            {
+                brand: 'toyota',
+                type: 'camry',
+                name: 'Toyota Camry',
+                listings: [
+                    { owner: 'Nguyễn Văn Nam', price: 1350000, phone: '0841234567', image: 'images/toyota_car.jpg' },
+                    { owner: 'Trần Thị Hạnh', price: 1350000, phone: '0842345678', image: 'images/toyota_car.jpg' }
+                ]
+            },
+            {
+                brand: 'porsche',
+                type: '911',
+                name: 'Porsche 911',
+                listings: [
+                    { owner: 'Lê Minh Hùng', price: 10000000, phone: '0843456789', image: 'images/Porshce.jpg' },
+                    { owner: 'Đỗ Thị Linh', price: 10000000, phone: '0844567890', image: 'images/Porshce.jpg' }
+                ]
+            },
+            {
+                brand: 'lamborghini',
+                type: 'aventador',
+                name: 'Lamborghini Huracan',
+                listings: [
+                    { owner: 'Bùi Văn Phúc', price: 22000000, phone: '0845678901', image: 'images/lamboghini.png' },
+                    { owner: 'Phạm Quang Dũng', price: 22000000, phone: '0846789012', image: 'images/lamboghini.png' }
+                ]
+            },
+            {
+                brand: 'ferrari',
+                type: '488',
+                name: 'Ferrari SF90',
+                listings: [
+                    { owner: 'Vũ Thị Mai', price: 25000000, phone: '0847890123', image: 'images/ferrari.jpg' },
+                    { owner: 'Phan Văn Khánh', price: 25000000, phone: '0848901234', image: 'images/ferrari.jpg' }
+                ]
+            },
+            {
+                brand: 'maybach',
+                type: 's-class',
+                name: 'Maybach S-Class',
+                listings: [
+                    { owner: 'Lý Thị Hoa', price: 15000000, phone: '0849012345', image: 'images/maybach.jpg' },
+                    { owner: 'Ngô Văn Bình', price: 15000000, phone: '0840123456', image: 'images/maybach.jpg' }
+                ]
+            },
+            {
+                brand: 'audi',
+                type: 'r8',
+                name: 'Audi R8',
+                listings: [
+                    { owner: 'Nguyễn Thị Trang', price: 10000000, phone: '0841239876', image: 'images/audi.jpg' },
+                    { owner: 'Đặng Văn Sơn', price: 10000000, phone: '0842341987', image: 'images/audi.jpg' }
+                ]
+            }
+        ];
+        // Lấy dữ liệu localStorage an toàn
+        function safeGetLocalStorage(key, defaultValue = null) {
+            try {
+                const value = localStorage.getItem(key);
+                return value ? JSON.parse(value) : defaultValue;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        let carModel = safeGetLocalStorage('selectedCarModel');
+        
+        if (!carModel) {
+            document.getElementById('listings-title').textContent = 'Không tìm thấy mẫu xe.';
+        } else {
+            document.getElementById('listings-title').textContent = `Danh sách chủ xe cho thuê: ${carModel.name}`;
+            const car = cars.find(c => c.brand === carModel.brand && c.type === carModel.type);
+            if (car && car.listings.length > 0) {
+                document.getElementById('listings-grid').innerHTML = car.listings.map(listing => `
+                    <div class="listing-card">
+                        <img src="${listing.image}" alt="${car.name}">
+                        <h3>${car.name}</h3>
+                        <p>Chủ xe: <strong>${listing.owner}</strong></p>
+                        <p>Giá thuê: <span style='color:#ffd700;'>${listing.price.toLocaleString('vi-VN')}</span> VNĐ/ngày</p>
+                        <p>Liên hệ: <a href="tel:${listing.phone}">${listing.phone}</a></p>
+                        <a href="#" class="btn btn-primary book-now-btn" data-listing='${JSON.stringify({...listing, carName: car.name})}'>Book Now</a>
+                    </div>
+                `).join('');
+                setTimeout(() => {
+                    document.querySelectorAll('.book-now-btn').forEach(btn => {
+                        btn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            try {
+                                const listing = JSON.parse(this.getAttribute('data-listing'));
+                                localStorage.setItem('selectedCarListing', JSON.stringify(listing));
+                                window.location.href = 'car-detail.html';
+                            } catch (error) {
+                                console.error('Error parsing listing data:', error);
+                                alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                            }
+                        });
+                    });
+                }, 0);
+            } else {
+                document.getElementById('listings-grid').innerHTML = '<p>Không có chủ xe nào cho thuê mẫu xe này.</p>';
+            }
+        }
+    </script>
+</body>
+</html> 

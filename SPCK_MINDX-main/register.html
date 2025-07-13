@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Car Rental</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: #222;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .register-container {
+            background: #2a2a2a;
+            padding: 40px 32px 32px 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            width: 350px;
+            text-align: center;
+        }
+        .register-container h2 {
+            color: #fff;
+            margin-bottom: 24px;
+        }
+        .register-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .register-container input {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #181818;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .register-container button {
+            background: #2336e6;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .register-container button:hover {
+            background: #1a2596;
+        }
+        .register-container .error {
+            color: #ff4d4f;
+            margin-top: 8px;
+            font-size: 0.98rem;
+        }
+        .register-container .success {
+            color: #4caf50;
+            margin-top: 8px;
+            font-size: 0.98rem;
+        }
+        .register-container .login-link {
+            color: #6c7ae0;
+            margin-top: 16px;
+            display: block;
+        }
+        .register-container .login-link:hover {
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Đăng ký tài khoản</h2>
+        <form id="register-form">
+            <input type="text" id="reg-username" placeholder="Username" required>
+            <input type="password" id="reg-password" placeholder="Password (min 6 ký tự)" required>
+            <input type="password" id="reg-confirm" placeholder="Confirm Password" required>
+            <button type="submit">Đăng ký</button>
+            <div class="error" id="register-error"></div>
+            <div class="success" id="register-success"></div>
+        </form>
+        <a href="login.html" class="login-link">Đã có tài khoản? Đăng nhập</a>
+    </div>
+    <script>
+        // Lấy danh sách user từ localStorage (giả lập database)
+        function getUsers() {
+            const users = localStorage.getItem('users');
+            return users ? JSON.parse(users) : [];
+        }
+        function saveUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        const form = document.getElementById('register-form');
+        const errorDiv = document.getElementById('register-error');
+        const successDiv = document.getElementById('register-success');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            errorDiv.textContent = '';
+            successDiv.textContent = '';
+            const username = document.getElementById('reg-username').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+
+            if (!username || !password || !confirm) {
+                errorDiv.textContent = 'Vui lòng nhập đầy đủ thông tin!';
+                return;
+            }
+            if (password.length < 6) {
+                errorDiv.textContent = 'Mật khẩu phải từ 6 ký tự trở lên!';
+                return;
+            }
+            if (password !== confirm) {
+                errorDiv.textContent = 'Mật khẩu xác nhận không khớp!';
+                return;
+            }
+            const users = getUsers();
+            if (users.some(u => u.username === username)) {
+                errorDiv.textContent = 'Tên đăng nhập đã tồn tại!';
+                return;
+            }
+            users.push({ username, password });
+            saveUsers(users);
+            successDiv.textContent = 'Đăng ký thành công! Chuyển sang trang đăng nhập...';
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1200);
+        });
+    </script>
+</body>
+</html> 
